@@ -6,6 +6,13 @@
 </head>
 <body>
     <a href="{% url 'polls:index' %}"><img src="https://netstorage.ringcentral.com/appext/logo/kNku72HNQPWCo-uLCKS4Hw~wCZbXGy1Qu-z3dzQ3U_j7Q/b8e47126-bf75-41df-bbf0-844db0a925a4.png" height="40"/></a>
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <div{% if message.tags %} class="alert alert-{{ message.tags }}"{% endif %}>{{ message }}</div>
+            {% endfor %}
+        </ul>
+    {% endif %}
     {% block body %}{% endblock %}
 </body>
 </html>
