@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from django.utils import timezone
 
 
 class Question(models.Model):
@@ -11,6 +12,10 @@ class Question(models.Model):
     question_text = models.CharField(max_length=200)
     pub_date = models.DateTimeField(verbose_name='Publication date')
     status = models.CharField(max_length=2, choices=Status, default=Status.NEW)
+
+    def was_published_recently(self):
+        now = timezone.now()
+        return now - timezone.timedelta(days=1) <= self.pub_date <= now
 
     def __str__(self):
         return self.question_text

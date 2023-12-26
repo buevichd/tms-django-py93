@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
+from django.utils import timezone
 
 from .models import Question, Choice
 from .forms import QuestionForm
@@ -7,7 +8,9 @@ from .forms import QuestionForm
 
 def index(request):
     questions = Question.objects \
-                    .filter(status=Question.Status.APPROVED) \
+                    .filter(status=Question.Status.APPROVED,
+                            pub_date__lte=timezone.now()) \
+                    .filter() \
                     .order_by('-pub_date')[:5]
     context = {'latest_question_list': questions}
     return render(request, 'polls/index.html', context)
@@ -15,13 +18,15 @@ def index(request):
 
 def detail(request, question_id: int):
     question = get_object_or_404(Question, id=question_id,
-                                 status=Question.Status.APPROVED)
+                                 status=Question.Status.APPROVED,
+                                 pub_date__lte=timezone.now())
     context = {'question': question}
     return render(request, 'polls/detail.html', context)
 
 def vote(request, question_id: int):
     question = get_object_or_404(Question, id=question_id,
-                                 status=Question.Status.APPROVED)
+                                 status=Question.Status.APPROVED,
+                                 pub_date__lte=timezone.now())
     try:
         selected_choice = question.choices.get(id=request.POST['choice'])
     except (KeyError, Choice.DoesNotExist):
