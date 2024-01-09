@@ -5,7 +5,19 @@
     <title>{% block title %}Polls APP{% endblock %}</title>
 </head>
 <body>
-    <a href="{% url 'polls:index' %}"><img src="https://netstorage.ringcentral.com/appext/logo/kNku72HNQPWCo-uLCKS4Hw~wCZbXGy1Qu-z3dzQ3U_j7Q/b8e47126-bf75-41df-bbf0-844db0a925a4.png" height="40"/></a>
+    <div class="hstack gap-3">
+        <a href="{% url 'polls:index' %}">
+            <img src="https://netstorage.ringcentral.com/appext/logo/kNku72HNQPWCo-uLCKS4Hw~wCZbXGy1Qu-z3dzQ3U_j7Q/b8e47126-bf75-41df-bbf0-844db0a925a4.png" height="40"/>
+        </a>
+        {% if user.is_authenticated %}
+            <form action="{% url 'logout' %}?next={{ request.path }}" method="post">
+                {% csrf_token %}
+                <input type="submit" value="Logout" class="btn btn-danger"/>
+            </form>
+        {% else %}
+            <a href="{% url 'login' %}?next={{ request.path }}" class="btn btn-info">Login</a>
+        {% endif %}
+    </div>
     {% if messages %}
         <ul class="messages">
             {% for message in messages %}
