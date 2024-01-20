@@ -1,11 +1,13 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from django.utils import timezone
+from django.views.decorators.cache import cache_page
 
 from .models import Question, Choice
 from .forms import QuestionForm
 
 
+@cache_page(60)
 def index(request):
     questions = Question.objects \
                     .filter(status=Question.Status.APPROVED,
