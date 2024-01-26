@@ -20,6 +20,8 @@ class Question(models.Model):
         ordering='pub_date'
     )
     def was_published_recently(self):
+        if not self.pub_date:
+            return False
         now = timezone.now()
         return now - timezone.timedelta(days=1) <= self.pub_date <= now
 
