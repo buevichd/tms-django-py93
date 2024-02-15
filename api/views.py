@@ -1,3 +1,4 @@
+from django.db.models import Count
 from django.shortcuts import get_object_or_404, redirect
 from django.utils import timezone
 from rest_framework import viewsets, filters
@@ -9,8 +10,16 @@ from polls.models import Question, Choice
 from .filters import ChoiceCountFilter
 
 
+def get_active_questions():
+    return Question.objects \
+        .annotate(choice_count=Count('choices')) \
+        .filter(status=Question.Status.APPROVED,
+                pub_date__lte=timezone.now(),
+                choice_count__gte=2)
+
+
 class QuestionViewSet(viewsets.ModelViewSet):
-    queryset = Question.objects.prefetch_related('choices')
+    queryset = get_active_questions().prefetch_related('choices')
     serializer_class = QuestionSerializer
     filter_backends = [filters.OrderingFilter, filters.SearchFilter,
                        ChoiceCountFilter]
@@ -28,9 +37,7 @@ class ChoiceViewSet(viewsets.ModelViewSet):
 
 @api_view(['POST'])
 def choice_vote(request: Request, question_id: int):
-    question = get_object_or_404(Question, id=question_id,
-                                 status=Question.Status.APPROVED,
-                                 pub_date__lte=timezone.now())
+    question = get_object_or_404(get_active_questions(), id=question_id)
     selected_choice = get_object_or_404(question.choices, id=request.data['choice'])
     selected_choice.votes += 1
     selected_choice.save()
