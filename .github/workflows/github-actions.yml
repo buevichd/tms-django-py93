@@ -7,10 +7,13 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v4
-      - run: |
+      - name: Install dependencies
+        run: |
           echo "🖥️ The workflow is now ready to test your code on the runner." 
           cd ${{ github.workspace }}
           pip3 install -r requirements.txt
+      - name: Run tests
+        run:
           ./manage.py test
           echo "All tests are finished"
       - run: echo "🍏 Job status is ${{ job.status }}."
