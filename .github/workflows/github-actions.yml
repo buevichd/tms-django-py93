@@ -2,7 +2,7 @@ name: GitHub Actions Demo
 run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
 on: [push]
 jobs:
-  Explore-GitHub-Actions:
+  Run-Tests:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository code
@@ -10,5 +10,7 @@ jobs:
       - run: |
           echo "🖥️ The workflow is now ready to test your code on the runner." 
           cd ${{ github.workspace }}
+          pip3 install -r requirements.txt
           ./manage.py test
+          echo "All tests are finished"
       - run: echo "🍏 Job status is ${{ job.status }}."
