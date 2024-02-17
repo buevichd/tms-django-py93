@@ -15,5 +15,4 @@ jobs:
       - name: Run tests
         run:
           ./manage.py test
-          echo "All tests are finished"
       - run: echo "🍏 Job status is ${{ job.status }}."

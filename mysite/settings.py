@@ -160,4 +160,11 @@ REST_FRAMEWORK = {
     ]
 }
 
-print(f'GITHUB_ACTIONS = {os.getenv("GITHUB_ACTIONS")}')
+if os.getenv("GITHUB_ACTIONS") == 'true':
+    # Use simple SQLite database on CI
+    DATABASES = {
+        'default': {
+                'ENGINE': 'django.db.backends.sqlite3',
+                'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
