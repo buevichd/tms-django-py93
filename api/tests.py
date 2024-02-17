@@ -31,8 +31,8 @@ class QuestionViewTest(TestCase):
         self.assertEquals(data['results'], [])
 
     def test_question_list(self):
-        create_question('Text1')
-        create_question('Text2')
+        create_question('Text1', pub_date=timezone.now() - timedelta(minutes=1))
+        create_question('Text2', pub_date=timezone.now() - timedelta(minutes=2))
 
         response = self.client.get('/api/questions/')
         self.assertEquals(response.status_code, 200)
