@@ -15,8 +15,9 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
 from django.contrib.auth.views import LoginView, LogoutView
+from django.urls import path, include
+from rest_framework_swagger.views import get_swagger_view
 
 urlpatterns = [
     path('polls/', include('polls.urls')),
@@ -25,5 +26,6 @@ urlpatterns = [
     path('accounts/login/', LoginView.as_view(), name='login'),
     path('accounts/logout/', LogoutView.as_view(), name='logout'),
     path('api/', include('api.urls')),
+    path('swagger/', get_swagger_view(title='API')),
     path('__debug__/', include('debug_toolbar.urls')),
 ]
