@@ -10,4 +10,5 @@ jobs:
       - name: Run tests
         run: |
           cd ${{ github.workspace }}
+          pip3 install -r requirements.txt
           ./manage.py test
