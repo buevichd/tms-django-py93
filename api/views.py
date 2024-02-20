@@ -15,7 +15,8 @@ def get_active_questions():
         .annotate(choice_count=Count('choices')) \
         .filter(status=Question.Status.APPROVED,
                 pub_date__lte=timezone.now(),
-                choice_count__gte=2)
+                choice_count__gte=2) \
+        .order_by('-pub_date')
 
 
 class QuestionViewSet(viewsets.ModelViewSet):
