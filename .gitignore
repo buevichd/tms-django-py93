@@ -160,4 +160,4 @@ cython_debug/
 .idea/
 
 # Node JS files
-node_modedules
+node_modules
