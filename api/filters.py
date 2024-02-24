@@ -14,3 +14,11 @@ class ChoiceCountFilter(filters.BaseFilterBackend):
         if max_choice_count is not None:
             queryset = queryset.filter(choice_count__lte=max_choice_count)
         return queryset
+
+
+class CategoryIdFilter(filters.BaseFilterBackend):
+    def filter_queryset(self, request: Request, queryset: QuerySet, view):
+        category_id = request.query_params.get('category_id')
+        if category_id is not None:
+            queryset = queryset.filter(category__id=category_id)
+        return queryset

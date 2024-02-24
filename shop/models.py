@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
+from django.db.models import QuerySet
 from django.utils.translation import gettext_lazy as _
 
 
@@ -40,6 +41,7 @@ class Order(models.Model):
     profile = models.ForeignKey('Profile', on_delete=models.CASCADE, related_name='orders')
     status = models.CharField(max_length=2, choices=OrderStatus.choices,
                               default=OrderStatus.INITIAL)
+    order_entries: QuerySet[OrderEntry]
 
     def __str__(self):
         return f'id:{self.id} - {self.profile} - {self.status}'
