@@ -26,4 +26,5 @@ urlpatterns = [
     path('accounts/logout/', LogoutView.as_view(), name='logout'),
     path('api/', include('api.urls')),
     path('__debug__/', include('debug_toolbar.urls')),
+    path('django-rq/', include('django_rq.urls')),
 ]

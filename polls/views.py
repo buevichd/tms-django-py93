@@ -3,6 +3,7 @@ from django.contrib import messages
 from django.utils import timezone
 from django.views.decorators.cache import cache_page
 
+from .jobs import update_question_view_count
 from .models import Question, Choice
 from .forms import QuestionForm
 
@@ -22,6 +23,7 @@ def detail(request, question_id: int):
     question = get_object_or_404(Question, id=question_id,
                                  status=Question.Status.APPROVED,
                                  pub_date__lte=timezone.now())
+    update_question_view_count.delay(question)
     context = {'question': question}
     return render(request, 'polls/detail.html', context)
 

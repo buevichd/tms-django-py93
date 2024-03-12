@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'debug_toolbar',
     'rest_framework_simplejwt',
+    'django_rq',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -172,4 +173,12 @@ REST_FRAMEWORK = {
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),
+}
+
+RQ_QUEUES = {
+    'default': {
+        'HOST': 'localhost',
+        'PORT': 6379,
+        'DB': 0,
+    },
 }
